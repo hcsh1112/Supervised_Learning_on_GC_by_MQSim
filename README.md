@@ -13,4 +13,27 @@
 ### Collect training data from MQSim
   * Just following the instruction on MQSim website( parameters setting).
   * Choose the I/O Block trace you want(you can find [there](https://trace.camelab.org/index.html) or [IOTTA](http://iotta.snia.org/)
+  * In __main.cpp__, you can find `fs.open("output.txt", fstream::out);` it can document your training data that you want into output.txt
+  * In __/ssd/GC_and_WL_Unit_Page_Level.cpp__, the __Check_gc_required()__ function. Once the write command comes, the `Check_gc_required()` will be triggered. You can modify the code to get your machine learning features in FTL.
+  
+In __/ssd/GC_and_WL_Unit_Page_Level.cpp__
+  ```cpp
+  else if ( free_block_pool_size < 102 ) {
+  } // else if
+
+  else if ( predict_one_C(obj, Simulator->Time() , \
+    percent_of_invalid, percent_of_valid, percent_of_free, block
+  } // else if
+
+  else // predict don't execute gc and still have more than op space
+    return;
+  ```
+  Please __comment__ this code while you're collecting the training data
+  
+### Machine Learning 
+  * TBD
+  
+### Cython, Link Python to C++
+  * TBD
+
   
