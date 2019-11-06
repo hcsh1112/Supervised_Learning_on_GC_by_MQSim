@@ -12,7 +12,7 @@
 
 ### Collect training data from MQSim
   * Just following the instruction on MQSim website( parameters setting).
-  * Choose the I/O Block trace you want(you can find [there](https://trace.camelab.org/index.html) or [IOTTA](http://iotta.snia.org/)
+  * Choose the I/O Block trace you want(you can find [camelab_trace](https://trace.camelab.org/index.html) or [IOTTA](http://iotta.snia.org/)
   * In __main.cpp__, you can find `fs.open("output.txt", fstream::out);` it can document your training data that you want into output.txt
   * In __/ssd/GC_and_WL_Unit_Page_Level.cpp__, the __Check_gc_required()__ function. Once the write command comes, the `Check_gc_required()` will be triggered. You can modify the code to get your machine learning features in FTL.
   
@@ -34,6 +34,67 @@ In __/ssd/GC_and_WL_Unit_Page_Level.cpp__
   * TBD
   
 ### Cython, Link Python to C++
-  * TBD
+  * Install Cython
+  ```
+  pip3 install Cython
+  ```
+  * See __model.pyx__, you should load you machine learning model in PyClass init object.
+  ```python
+  class PyClass(object):
+    def __init__(self):
+    # load your machine learning model here
 
+    def predict_one(Feature in MQSim)
+    # you can do data processing here and return the prediction of model
+  
+    cdef public object createPyClass():
+      return PyClass()
+    # Convert your Python obj to C++ obj
+    
+    cdef public int predict_one_C( object p, data_type your features ... )
+      return p.predict_one( your features ... )
+    # Your python function can be called by C++
+  ```
+  
+  * Build your extension __setup.py__
+  ``` python
+  from distutils.core import setup
+  from Cython.Build import cythonize
+  
+  setup(ext_modules=cythonize('model.pyx'))
+  # build your model.pyx
+  ```
+  
+  `python3 setup.py build_ext --inplace`
+  then you can get model.c, model.h, model.so
+  
+  * Use Machine Learning Model in MQSim
+    * I have already added `extern PyObject * obj` in __global.h__, and you can call your obj in anywhere.
+    * In __main.cpp__
+    ```cpp
+    // Cython 
+    PyImport_AppendInittab("model", PyInit_model);
+    Py_Initialize();
+    PyImport_ImportModule("model");
+    obj = createPyClass();
+    ```
+    let py pointer link to extern C++ pointer.
+    
+    * In __/ssd/GC_and_WL_Unit_Page_Level.cpp__ , put features in MQSim to your machine learning model and do some extra operation based on your prediction.
+    ```cpp
+    // Free block space < Hard Threshold                                   
+    else if ( free_block_pool_size < your Hard Threshold ) {
+    } // else if
+
+    else if ( predict_one_C(obj, your features )
+    } // else if
+
+    else // predict don't execute gc and still have more than op space
+      return;
+    ``` 
+    you should uncomment this code in order to do the GC based on your prediction. 
+
+  
+  
+  
   
