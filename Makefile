@@ -22,9 +22,6 @@ endef
 
 all: checkdirs MQSim
 
-CP:
-	cp ./src/build/temp.linux-x86_64-3.5/model.o ./build/model.o
-
 MQSim: $(OBJ)
 	$(LD) $(CC_FLAGS) $^ -o $@ -lpython3.5m -lpthread -ldl -lutil -lm  ./model.cpython-35m-x86_64-linux-gnu.so 
 
