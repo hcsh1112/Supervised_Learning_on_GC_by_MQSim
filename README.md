@@ -31,7 +31,7 @@ In __/ssd/GC_and_WL_Unit_Page_Level.cpp__
   Please __comment__ this code while you're collecting the training data
   
 ### Machine Learning 
-  * TBD
+  * You can see [here](https://github.com/hcsh1112/Supervised_Learning_on_GC_in_MQSim/tree/master/Python_Machine_Learning)
   
 ### Cython, Link Python to C++
   * Install Cython
@@ -94,7 +94,26 @@ In __/ssd/GC_and_WL_Unit_Page_Level.cpp__
     ``` 
     you should uncomment this code in order to do the GC based on your prediction. 
 
+### Makefile
+  * Check your python path and version
+  ```
+  INCLUDES  := $(addprefix -I,$(SRC_DIR)) -I/usr/include/python3.5m -I/usr/include/python3.5m
+  ```
+  * Check every cpp python path 
+  ```cpp
+  include <python3.5m/Python.h>
+  ```
+  * Link .so (Must be your file afer `python3 setup.py build_ext --inplace`)
+  ```
+  MQSim: $(OBJ)
+	  $(LD) $(CC_FLAGS) $^ -o $@ -lpython3.5m -lpthread -ldl -lutil -lm  ./model.cpython-35m-x86_64-linux-gnu.so
+  ```
+  * If you want to record the training data by MQSim your can delete`./model.cpython-35m-x86_64-linux-gnu.so`
   
+  * After `make` command, you will get MQSim.exe
+  
+### Using MQSim
+  * `./MQSim -i ssdconfig.xml -w workload.xml`
   
   
   
