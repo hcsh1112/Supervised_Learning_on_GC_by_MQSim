@@ -7,6 +7,7 @@
   * [Support Vector Machine](https://github.com/hcsh1112/Supervised_Learning_on_GC_in_MQSim/blob/master/Python_Machine_Learning/SVM_based.ipynb)
   * [Deep Neural Network](https://github.com/hcsh1112/Supervised_Learning_on_GC_in_MQSim/blob/master/Python_Machine_Learning/DNN_based.ipynb)
   * Simple test in different methods( Using Systor17 trace and 9:1 training/testing data )
+  ![img](https://github.com/hcsh1112/Supervised_Learning_on_GC_by_MQSim/blob/master/ReadMe_img/table.jpg)
   
 4. Must SAVE your model to be a files, in order to use it in MQSim.
 
